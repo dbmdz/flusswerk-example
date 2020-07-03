@@ -16,6 +16,10 @@ public class IndexDocument {
     fields.put(field, value);
   }
 
+  public Object get(String field) {
+    return fields.get(field);
+  }
+
   public Map<String, Object> getFields() {
     return fields;
   }

@@ -5,14 +5,18 @@ import com.github.dbmdz.flusswerk.example.model.IndexDocument;
 import com.github.dbmdz.flusswerk.framework.exceptions.RetryProcessingException;
 import com.github.dbmdz.flusswerk.framework.model.Message;
 import java.util.function.Function;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Writer implements Function<IndexDocument, Message> {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(Writer.class);
+
   @Override
   public Message apply(IndexDocument indexDocument) {
-    String id = (String) indexDocument.getFields().get("id");
+    String id = (String) indexDocument.get("id");
     try {
       sendToSearchService(indexDocument);
     } catch (Exception exception) {
@@ -24,6 +28,7 @@ public class Writer implements Function<IndexDocument, Message> {
   }
 
   private void sendToSearchService(IndexDocument indexDocument) {
-    // pretend sending data to search service
+    LOGGER.info("pretend sending index document {} to search service",
+        indexDocument.get("id"));
   }
 }

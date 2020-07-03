@@ -5,10 +5,14 @@ import com.github.dbmdz.flusswerk.example.model.Document;
 import com.github.dbmdz.flusswerk.framework.exceptions.StopProcessingException;
 import java.io.IOException;
 import java.util.function.Function;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Reader implements Function<IndexMessage, Document> {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(Reader.class);
 
   @Override
   public Document apply(IndexMessage indexMessage) {
@@ -25,6 +29,7 @@ public class Reader implements Function<IndexMessage, Document> {
 
   private Document loadDocument(String itemId) throws IOException {
     // pretend to load document from disk
+    LOGGER.info("Pretend loading document with id '{}' from disk.", itemId);
     return new Document(itemId, String.format("Content of %s", itemId));
   }
 }

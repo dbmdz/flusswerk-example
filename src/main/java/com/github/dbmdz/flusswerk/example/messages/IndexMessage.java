@@ -2,6 +2,8 @@ package com.github.dbmdz.flusswerk.example.messages;
 
 import static java.util.Objects.requireNonNull;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.dbmdz.flusswerk.framework.model.Message;
 import java.util.Objects;
 
@@ -9,7 +11,8 @@ public class IndexMessage extends Message {
 
   private final String itemId;
 
-  public IndexMessage(String itemId) {
+  @JsonCreator
+  public IndexMessage(@JsonProperty("itemId") String itemId) {
     this.itemId = requireNonNull(itemId);
   }
 

@@ -1,0 +1,72 @@
+# Default spring profile is local
+spring:
+  application:
+    name: flusswerk-example
+  profiles:
+    active: local
+  jmx:
+    enabled: true
+
+flusswerk:
+  processing:
+    threads: 5
+  routing:
+    incoming:
+      - search.index
+    outgoing:
+      default: search.publish
+    failure policies:
+      search.index:
+        maxRetries: 5
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      base-path: '/monitoring'
+      exposure:
+        include:
+          - prometheus
+          - metrics
+          - info
+          - health
+  info:
+    git:
+      mode: full
+
+server:
+  port: 12345
+
+---
+spring:
+  profiles: local
+
+---
+spring:
+  profiles: DEV
+flusswerk:
+  rabbitmq:
+    host: rabbitmq.dev
+    username: secret
+    password: secret
+
+---
+spring:
+  profiles: STG
+flusswerk:
+  rabbitmq:
+    host: rabbitmq.stg
+    username: secret
+    password: secret
+
+---
+spring:
+  profiles: PROD
+flusswerk:
+  rabbitmq:
+    host: rabbitmq.prod
+    username: secret
+    password: secret
+

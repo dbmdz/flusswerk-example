@@ -30,6 +30,6 @@ public class Reader implements Function<IndexMessage, Document> {
   private Document loadDocument(String itemId) throws IOException {
     // pretend to load document from disk
     LOGGER.info("Pretend loading document with id '{}' from disk.", itemId);
-    return new Document(itemId, String.format("Content of %s", itemId));
+    return new Document(itemId, "Once upon a time…");
   }
 }

@@ -17,5 +17,4 @@ class DocumentRepositoryTest {
     var document = documentRepository.loadDocument(expected);
     assertThat(document.getId()).isEqualTo(expected);
   }
-
 }

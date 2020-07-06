@@ -92,9 +92,11 @@ In the queue `search.publish`, you will find the outgoing message send by the `W
 
 ```json
 {
-    "envelope":{ ... }, // Flusswerk metadata
+    "envelope":{},
     "tracingId":"12345",
     "itemId":"42",
     "source":"search"
 }
 ```
+
+The field `envelope` contains Flusswerk specific metadata and is usually only used by the Framework itself.

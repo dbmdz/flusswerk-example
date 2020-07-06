@@ -1,24 +1,29 @@
 package com.github.dbmdz.flusswerk.example.flow;
 
+import static java.util.Objects.requireNonNull;
+
+import com.github.dbmdz.flusswerk.example.IndexClient;
 import com.github.dbmdz.flusswerk.example.messages.RefreshWebsiteMessage;
 import com.github.dbmdz.flusswerk.example.model.IndexDocument;
 import com.github.dbmdz.flusswerk.framework.exceptions.RetryProcessingException;
 import com.github.dbmdz.flusswerk.framework.model.Message;
 import java.util.function.Function;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Writer implements Function<IndexDocument, Message> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(Writer.class);
+  private final IndexClient indexClient;
+
+  public Writer(IndexClient indexClient) {
+    this.indexClient = requireNonNull(indexClient);
+  }
 
   @Override
   public Message apply(IndexDocument indexDocument) {
     String id = (String) indexDocument.get("id");
     try {
-      sendToSearchService(indexDocument);
+      indexClient.index(indexDocument);
     } catch (Exception exception) {
       throw new RetryProcessingException(
               "Could not index document for id %s, will try again later", id)
@@ -27,8 +32,4 @@ public class Writer implements Function<IndexDocument, Message> {
     return new RefreshWebsiteMessage(id, "search");
   }
 
-  private void sendToSearchService(IndexDocument indexDocument) {
-    LOGGER.info("pretend sending index document {} to search service",
-        indexDocument.get("id"));
-  }
 }

@@ -1,24 +1,29 @@
 package com.github.dbmdz.flusswerk.example.flow;
 
+import static java.util.Objects.requireNonNull;
+
+import com.github.dbmdz.flusswerk.example.DocumentRepository;
 import com.github.dbmdz.flusswerk.example.messages.IndexMessage;
 import com.github.dbmdz.flusswerk.example.model.Document;
 import com.github.dbmdz.flusswerk.framework.exceptions.StopProcessingException;
 import java.io.IOException;
 import java.util.function.Function;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Reader implements Function<IndexMessage, Document> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(Reader.class);
+  private final DocumentRepository documentRepository;
+
+  public Reader(DocumentRepository documentRepository) {
+    this.documentRepository = requireNonNull(documentRepository);
+  }
 
   @Override
   public Document apply(IndexMessage indexMessage) {
     Document document;
     try {
-      document = loadDocument(indexMessage.getItemId());
+      document = documentRepository.loadDocument(indexMessage.getItemId());
     } catch (IOException exception) {
       throw new StopProcessingException(
               "Could not load document for id {}", indexMessage.getItemId())
@@ -27,9 +32,4 @@ public class Reader implements Function<IndexMessage, Document> {
     return document;
   }
 
-  private Document loadDocument(String itemId) throws IOException {
-    // pretend to load document from disk
-    LOGGER.info("Pretend loading document with id '{}' from disk.", itemId);
-    return new Document(itemId, "Once upon a time…");
-  }
 }

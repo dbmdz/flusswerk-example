@@ -2,9 +2,9 @@ package com.github.dbmdz.flusswerk.example.flow;
 
 import static java.util.Objects.requireNonNull;
 
-import com.github.dbmdz.flusswerk.example.DocumentRepository;
 import com.github.dbmdz.flusswerk.example.messages.IndexMessage;
 import com.github.dbmdz.flusswerk.example.model.Document;
+import com.github.dbmdz.flusswerk.example.stubs.DocumentRepository;
 import com.github.dbmdz.flusswerk.framework.exceptions.StopProcessingException;
 import java.io.IOException;
 import java.util.function.Function;
@@ -31,5 +31,4 @@ public class Reader implements Function<IndexMessage, Document> {
     }
     return document;
   }
-
 }

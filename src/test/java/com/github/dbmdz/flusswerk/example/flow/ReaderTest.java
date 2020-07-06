@@ -1,15 +1,13 @@
 package com.github.dbmdz.flusswerk.example.flow;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.github.dbmdz.flusswerk.example.DocumentRepository;
 import com.github.dbmdz.flusswerk.example.messages.IndexMessage;
 import com.github.dbmdz.flusswerk.example.model.Document;
+import com.github.dbmdz.flusswerk.example.stubs.DocumentRepository;
 import java.io.IOException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -26,5 +24,4 @@ class ReaderTest {
     Document actual = reader.apply(new IndexMessage(expected.getId()));
     assertThat(actual).isEqualTo(expected);
   }
-
 }

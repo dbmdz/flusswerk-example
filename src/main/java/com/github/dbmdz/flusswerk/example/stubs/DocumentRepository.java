@@ -1,4 +1,4 @@
-package com.github.dbmdz.flusswerk.example;
+package com.github.dbmdz.flusswerk.example.stubs;
 
 import com.github.dbmdz.flusswerk.example.model.Document;
 import java.io.IOException;
@@ -14,5 +14,4 @@ public class DocumentRepository {
     LOGGER.info("Pretend loading document with id '{}' from disk.", itemId);
     return new Document(itemId, "Once upon a time…");
   }
-
 }

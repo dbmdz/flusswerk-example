@@ -4,8 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.github.dbmdz.flusswerk.example.model.Document;
-import com.github.dbmdz.flusswerk.example.model.IndexDocument;
-import java.util.Map.Entry;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -23,5 +21,4 @@ class TransformerTest {
     assertThat(actual.get("id")).isEqualTo(document.getId());
     assertThat(actual.get("content")).isEqualTo(document.getContent());
   }
-
 }

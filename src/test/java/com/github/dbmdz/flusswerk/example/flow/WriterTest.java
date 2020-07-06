@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import com.github.dbmdz.flusswerk.example.IndexClient;
 import com.github.dbmdz.flusswerk.example.messages.RefreshWebsiteMessage;
 import com.github.dbmdz.flusswerk.example.model.IndexDocument;
+import com.github.dbmdz.flusswerk.example.stubs.IndexClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,5 +40,4 @@ class WriterTest {
     var actual = (RefreshWebsiteMessage) writer.apply(document);
     assertThat(actual.getItemId()).isEqualTo(document.get("id"));
   }
-
 }

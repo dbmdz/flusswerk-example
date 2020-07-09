@@ -3,7 +3,9 @@ package com.github.dbmdz.flusswerk.example;
 import com.github.dbmdz.flusswerk.framework.EnableFlusswerk;
 import com.github.dbmdz.flusswerk.framework.FlusswerkApplication;
 import com.github.dbmdz.flusswerk.framework.engine.Engine;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
 @EnableFlusswerk
 public class Application extends FlusswerkApplication {
 

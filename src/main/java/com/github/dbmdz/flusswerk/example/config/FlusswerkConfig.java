@@ -1,4 +1,4 @@
-package com.github.dbmdz.flusswerk.example;
+package com.github.dbmdz.flusswerk.example.config;
 
 import com.github.dbmdz.flusswerk.example.flow.Reader;
 import com.github.dbmdz.flusswerk.example.flow.Transformer;
@@ -21,8 +21,7 @@ public class FlusswerkConfig {
   }
 
   @Bean
-  public FlowSpec<IndexMessage, Document, IndexDocument> flowSpec(
-      Reader reader, Transformer transformer, Writer writer) {
+  public FlowSpec flowSpec(Reader reader, Transformer transformer, Writer writer) {
     return FlowBuilder.flow(IndexMessage.class, Document.class, IndexDocument.class)
         .reader(reader)
         .transformer(transformer)

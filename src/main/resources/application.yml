@@ -48,7 +48,8 @@ spring:
   profiles: DEV
 flusswerk:
   rabbitmq:
-    host: rabbitmq.dev
+    hosts:
+      - rabbitmq.dev
     username: secret
     password: secret
 
@@ -57,7 +58,8 @@ spring:
   profiles: STG
 flusswerk:
   rabbitmq:
-    host: rabbitmq.stg
+    hosts:
+      - rabbitmq.stg
     username: secret
     password: secret
 
@@ -66,7 +68,7 @@ spring:
   profiles: PROD
 flusswerk:
   rabbitmq:
-    host: rabbitmq.prod
+    hosts:
+      - rabbitmq.prod
     username: secret
     password: secret
-

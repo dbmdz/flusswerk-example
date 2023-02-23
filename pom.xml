@@ -20,7 +20,6 @@
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <version.plugin.spotbugs>4.2.3</version.plugin.spotbugs>
   </properties>
 
   <dependencies>
@@ -84,8 +83,8 @@
             <configuration>
               <hooks>
                 <pre-commit>
-                  if ! mvn com.coveo:fmt-maven-plugin:check ; then
-                    mvn com.coveo:fmt-maven-plugin:format
+                  if ! mvn com.spotify.fmt:fmt-maven-plugin:check ; then
+                    mvn com.spotify.fmt:fmt-maven-plugin:format
                     echo -e "\e[31mCode has been reformatted to match code style\e[0m"
                     echo -e "\e[31mPlease use git add … to add modified files\e[0m"
                     echo "Your commit message was:"
@@ -99,8 +98,9 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>com.coveo</groupId>
+        <groupId>com.spotify.fmt</groupId>
         <artifactId>fmt-maven-plugin</artifactId>
+        <version>2.19</version>
         <executions>
           <execution>
             <goals>
@@ -119,7 +119,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>${version.plugin.spotbugs}</version>
+        <version>4.2.3</version>
 
         <configuration>
           <failOnError>true</failOnError>

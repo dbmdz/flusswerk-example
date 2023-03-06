@@ -21,7 +21,7 @@ public class IndexDocument {
   }
 
   public Map<String, Object> getFields() {
-    return fields;
+    return Map.copyOf(fields);
   }
 
   @Override

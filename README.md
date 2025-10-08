@@ -1,74 +1,17 @@
 # Flusswerk Application Example 
-This application simulates a simple indexing application to show the Flusswerk framework in action.
-
 ## Overview
 
-The data processing logic is split in three components:
+This application demonstrates the Flusswerk framework in action. A Flusswerk application typically takes an incoming message from a RabbitMQ queue, does something, and then may send any number of messages to other topics for further processing.
 
-The [`Reader`](src/main/java/com/github/dbmdz/flusswerk/example/flow/Reader.java) receives a message from RabbitMQ and loads the corresponding document (as instance of `Document`).
+The data processing logic is in [DemoProcessor](src/main/java/dev/mdz/flusswerk/example/flow/DemoProcessor.java). Usually all kinds of things can go wrong when processing data: Data might be corrupt, backends fail,... Flusswerk provides a simple way to handle these error cases with special exceptions. 
 
-```java
-@Component
-public class Reader implements Function<IndexMessage, Document> {
+We simulate the three general error cases with the field `issue` in the incoming message:
 
-  @Override
-  public Document apply(IndexMessage indexMessage) {
-    Document document;
-    try {
-      document = loadDocument(indexMessage.getItemId());
-    } catch (IOException exception) {
-      throw new StopProcessingException(
-              "Could not load document for id {}", indexMessage.getItemId())
-          .causedBy(exception);
-    }
-    return document;
-  }
-
-  private Document loadDocument(String itemId) throws IOException {
-      // ...
-  }
-
-}
-```
-
-The [`Transformer`](src/main/java/com/github/dbmdz/flusswerk/example/flow/Transformer.java) then takes the document and builds the required data for the Indexing API (an `IndexDocument`):
-
-```java
-@Component
-public class Transformer implements Function<Document, IndexDocument> {
-
-  @Override
-  public IndexDocument apply(Document document) {
-    IndexDocument indexDocument = new IndexDocument();
-    // ...
-    return indexDocument;
-  }
-}
-```
-
-
-The [`Writer`](src/main/java/com/github/dbmdz/flusswerk/example/flow/Writer.java) finally takes the processed data, writes it to the Indexing API and sends messages to notify the next processing application.
-
-```java
-@Component
-public class Writer implements Function<IndexDocument, Message> {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(Writer.class);
-
-  @Override
-  public Message apply(IndexDocument indexDocument) {
-    String id = (String) indexDocument.get("id");
-    try {
-      sendToSearchService(indexDocument);
-    } catch (Exception exception) {
-      throw new RetryProcessingException(
-              "Could not index document for id %s, will try again later", id)
-          .causedBy(exception);
-    }
-    return new RefreshWebsiteMessage(id, "search");
-  }
-}
-```
+| Case                            | Field value | Behavior |
+| ------------------------------- | --------------------------- | --------- |
+| No error, everything just works | `EVERYTHING_FINE` (default) | This is the usual case, everything works as expected, data is processed. |
+| Temporary error                 | `TEMPORARY`                 | Sometimes there are issues that will resolve themselves, and we can try processing the message again later. A typical example would be a temporary network issue or an API service that is restarting. |
+| Permanent error                 | `PERMANENT`                 | In some cases it is clear that trying again later won't make a difference, e.g. if the data is corrupt. Then we stop processing for good.                                                              |
 
 ## Try yourself:
 
@@ -77,26 +20,27 @@ To try yourself, get the repository and RabbitMQ-Server:
 ```bash
 $ git clone https://github.com/dbmdz/flusswerk-example.git
 $ cd flusswerk-example
-$ docker-compose up
+$ docker-compose up -d
 ```
 
 Then start the `flusswerk-example` Application from your IDE and open the RabbitMQ-Management UI at http://localhost:15672 (Login in as `guest`/`guest`). 
 
-Drop the following message into the queue `search.index`:
+Drop the following message into the queue `incoming`:
 
 ```json
-{ "itemId": "42", "tracingId": "12345" }
+{ "id": "42" }
 ```
 
-In the queue `search.publish`, you will find the outgoing message send by the `Writer`:
+You now should find a message in the queue `next`.
+
+Now try the error cases:
 
 ```json
-{
-    "envelope":{},
-    "tracingId":"12345",
-    "itemId":"42",
-    "source":"search"
-}
+{ "id": "42", "issue": "TEMPORARY" }
 ```
 
-The field `envelope` contains Flusswerk specific metadata and is usually only used by the Framework itself.
+and
+
+```json
+{ "id": "42", "issue": "PERMANENT" }
+```

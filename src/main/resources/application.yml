@@ -1,4 +1,5 @@
 # Default spring profile is local
+---
 spring:
   application:
     name: flusswerk-example
@@ -12,11 +13,11 @@ flusswerk:
     threads: 5
   routing:
     incoming:
-      - search.index
+      - incoming
     outgoing:
-      default: search.publish
+      default: next
     failure policies:
-      search.index:
+      incoming:
         maxRetries: 5
 
 management:
@@ -41,11 +42,15 @@ server:
 
 ---
 spring:
-  profiles: local
+  config:
+    activate:
+      on-profile: local
 
 ---
 spring:
-  profiles: DEV
+  config:
+    activate:
+      on-profile: DEV
 flusswerk:
   rabbitmq:
     hosts:
@@ -55,7 +60,9 @@ flusswerk:
 
 ---
 spring:
-  profiles: STG
+  config:
+    activate:
+      on-profile: STG
 flusswerk:
   rabbitmq:
     hosts:
@@ -65,7 +72,9 @@ flusswerk:
 
 ---
 spring:
-  profiles: PROD
+  config:
+    activate:
+      on-profile: PROD
 flusswerk:
   rabbitmq:
     hosts:

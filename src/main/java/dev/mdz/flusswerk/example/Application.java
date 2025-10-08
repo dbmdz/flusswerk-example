@@ -26,7 +26,7 @@ public class Application extends FlusswerkApplication {
     }
 
     /**
-     * This tells Fluswerk how to process messages.
+     * This tells Flusswerk how to process messages.
      *
      * @param processor the bean that contains the processing logic
      * @return the flow specification

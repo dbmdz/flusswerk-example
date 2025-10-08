@@ -15,33 +15,35 @@ import org.springframework.context.annotation.Bean;
 @EnableFlusswerk
 public class Application extends FlusswerkApplication {
 
-  /**
-   * This tells Flusswerk which class to use for deserializing incoming messages.
-   *
-   * @return the incoming message type
-   */
-  @Bean
-  public IncomingMessageType incomingMessageType() {
-    return new IncomingMessageType(DemoMessage.class);
-  }
+    /**
+     * This tells Flusswerk which class to use for deserializing incoming messages.
+     *
+     * @return the incoming message type
+     */
+    @Bean
+    public IncomingMessageType incomingMessageType() {
+        return new IncomingMessageType(DemoMessage.class);
+    }
 
-  /**
-   * This tells Fluswerk how to process messages.
-   *
-   * @param processor the bean that contains the processing logic
-   * @return the flow specification
-   */
-  @Bean
-  public FlowSpec flowSpec(DemoProcessor processor) {
-    return FlowBuilder.messageProcessor(DemoMessage.class).process(processor).build();
-  }
+    /**
+     * This tells Fluswerk how to process messages.
+     *
+     * @param processor the bean that contains the processing logic
+     * @return the flow specification
+     */
+    @Bean
+    public FlowSpec flowSpec(DemoProcessor processor) {
+        return FlowBuilder.messageProcessor(DemoMessage.class)
+                .process(processor)
+                .build();
+    }
 
-  /**
-   * The main method to start the Spring Boot application.
-   *
-   * @param args command line arguments
-   */
-  public static void main(String[] args) {
-    SpringApplication.run(Application.class, args);
-  }
+    /**
+     * The main method to start the Spring Boot application.
+     *
+     * @param args command line arguments
+     */
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
 }

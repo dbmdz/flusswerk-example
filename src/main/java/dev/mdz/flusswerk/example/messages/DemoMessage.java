@@ -21,7 +21,7 @@ public class DemoMessage extends Message {
     public DemoMessage(@JsonProperty("id") String id, @JsonProperty("issue") Issue issue) {
         this.id = id;
         if (issue == null) {
-            issue = Issue.EVERYTHING_FINE;
+            this.issue = Issue.EVERYTHING_FINE;
         } else {
             this.issue = issue;
         }
